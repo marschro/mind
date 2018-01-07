@@ -220,6 +220,26 @@ class Mind extends Emitter {
   download () {
     return this.weights
   }
+
+  /**
+   * Evaluation helper.
+   *
+   * @return Function shouldBe(x)
+   * @api public
+   */
+
+  eval (predicts) {
+    const r = v => Math.round(v, 0)
+    let result = this.predict(predicts)
+    return {
+      shouldBe: (should) => {
+        let symbol = should === r(result)
+          ? '\x1b[37m√\x1b[0m'
+          : '\x1b[31mX\x1b[0m'
+        console.log(`Should be ${should}, is ${r(result)} ${symbol}`)
+      }
+    }
+  }
 }
 
 module.exports = Mind
